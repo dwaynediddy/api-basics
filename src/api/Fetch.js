@@ -14,22 +14,23 @@ const Fetch = () => {
     // perform a side effect that can generate different outputs for the same data fetching
     //isolating
 useEffect(() => {
-const getData = async() => {
-  try {
-    const response = await fetch(getQuote)
-    if(!response.ok) {
-      throw new Error("HTTP error")
+  const getData = async() => {
+    try {
+      const response = await fetch(getQuote)
+      if(!response.ok) {
+        throw new Error("HTTP error")
+      }
+      let actualData = await response.json()
+      console.log(response)
+      setData(actualData)
+      setError(null)
+      setLoading(false)
+    } catch(err){
+      setError(err.message)
+      setData(null)
     }
-    let actualData = await response.json()
-    setData(actualData)
-    setError(null)
-    setLoading(false)
-  } catch(err){
-    setError(err.message)
-    setData(null)
   }
-}
-getData()
+  getData()
 }, [])
 
 
