@@ -17,7 +17,9 @@ const FetchWithAxiosStepTwo= () => {
             } catch (e) {
                 setError('error')
                 setUser(null)
-            } 
+            } finally {
+                setLoading(false)
+            }
         }
         getUser()
     }, [])
