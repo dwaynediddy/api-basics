@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 
-const getQuote = 'https://api.quotable.io/random?minLength=100&maxLength=140'
+const getQuote = `https://jsonplaceholder.typicode.com/posts?_limit=8`
 
 const Fetch = () => {
     // state to store on data return
@@ -13,29 +13,42 @@ const Fetch = () => {
 
     // perform a side effect that can generate different outputs for the same data fetching
     //isolating
-    useEffect(() => {
-        // data fetching here
-        // .get is default, so its not needed
-        // fetch.get(getQuote)
-        fetch(getQuote)
-        .then((response) => {
-            if (!response.ok) {
-              throw new Error(
-                `This is an HTTP error: The status is ${response.status}`
-              );
-            }
-            return response.json();
-          })
-        .then(actualData => console.log(actualData))
-        // catch will manually handle errors the promise wont reject / non network failures
-        .catch(error => console.log(error))
-    },[])
+useEffect(() => {
+const getData = async() => {
+  try {
+    const response = await fetch(getQuote)
+    if(!response.ok) {
+      throw new Error("HTTP error")
+    }
+    let actualData = await response.json()
+    setData(actualData)
+    setError(null)
+    setLoading(false)
+  } catch(err){
+    setError(err.message)
+    setData(null)
+  }
+}
+getData()
+}, [])
 
 
     return (
-        <div>
-            
-        </div>
+      <div>
+      <h1>API Posts</h1>
+      {loading && <div>A moment please...</div>}
+      {error && (
+        <div>{`There is a problem fetching the post data - ${error}`}</div>
+      )}
+      <ul>
+        {data &&
+          data.map(({ id, title }) => (
+            <li key={id}>
+              <h3>{title}</h3>
+            </li>
+          ))}
+      </ul>
+    </div>
     )
 }
 
