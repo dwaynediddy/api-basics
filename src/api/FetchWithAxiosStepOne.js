@@ -13,8 +13,11 @@ const FetchWithAxiosStepOne = () => {
     const [error, setError] = useState(null)
 
     useEffect(() => {
+        // fetching with axois
         const res = axios.get(getUser)
+        //will show results of api call in console
         .then((res) => console.log(res))
+        return res
     })
 
     return (
